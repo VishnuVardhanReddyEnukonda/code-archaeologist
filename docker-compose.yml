@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  # This service runs the Neo4j Graph Database
+  neo4j:
+    image: neo4j:5.15.0
+    container_name: code_archaeologist_db
+    # Open ports so we can access it from the browser (7474) and code (7687)
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    # Set the default username and password
+    environment:
+      - NEO4J_AUTH=neo4j/password123
+      # Optimize memory so it doesn't crash on large codebases
+      - NEO4J_dbms_memory_heap_initial__size=512m
+      - NEO4J_dbms_memory_heap_max__size=1G
+    # Save the data in a local folder so it persists after restart
+    volumes:
+      - ./neo4j_data:/data
